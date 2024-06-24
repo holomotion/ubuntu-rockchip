@@ -2,6 +2,8 @@
 
 export BOARD_NAME="Radxa NX5 IO"
 export BOARD_MAKER="Radxa"
+export BOARD_SOC="Rockchip RK3588S"
+export BOARD_CPU="ARM Cortex A76 / A55"
 export UBOOT_PACKAGE="u-boot-radxa-rk3588"
 export UBOOT_RULES_TARGET="radxa-nx5-io-rk3588s"
 
@@ -16,6 +18,9 @@ function config_image_hook__radxa-nx-io() {
 
     # Install libmali blobs alongside panfork
     chroot "${rootfs}" apt-get -y install libmali-g610-x11
+
+    # Install the rockchip camera engine
+    chroot "${rootfs}" apt-get -y install camera-engine-rkaiq-rk3588
 
     return 0
 }

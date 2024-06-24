@@ -2,6 +2,8 @@
 
 export BOARD_NAME="ArmSoM w3"
 export BOARD_MAKER="ArmSoM"
+export BOARD_SOC="Rockchip RK3588"
+export BOARD_CPU="ARM Cortex A76 / A55"
 export UBOOT_PACKAGE="u-boot-radxa-rk3588"
 export UBOOT_RULES_TARGET="armsom-w3-rk3588"
 
@@ -17,6 +19,9 @@ function config_image_hook__armsom-w3() {
 
     # Install libmali blobs alongside panfork
     chroot "${rootfs}" apt-get -y install libmali-g610-x11
+
+    # Install the rockchip camera engine
+    chroot "${rootfs}" apt-get -y install camera-engine-rkaiq-rk3588
 
     # Fix and configure audio device
     mkdir -p "${rootfs}"/usr/lib/scripts

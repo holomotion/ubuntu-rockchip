@@ -2,6 +2,8 @@
 
 export BOARD_NAME="Orange Pi 5 Pro"
 export BOARD_MAKER="Xulong"
+export BOARD_SOC="Rockchip RK3588S"
+export BOARD_CPU="ARM Cortex A76 / A55"
 export UBOOT_PACKAGE="u-boot-orangepi-rk3588"
 export UBOOT_RULES_TARGET="orangepi_5_pro"
 
@@ -17,6 +19,9 @@ function config_image_hook__orangepi-5-pro() {
 
     # Install libmali blobs alongside panfork
     chroot "${rootfs}" apt-get -y install libmali-g610-x11
+
+    # Install the rockchip camera engine
+    chroot "${rootfs}" apt-get -y install camera-engine-rkaiq-rk3588
 
     # Enable bluetooth
     cp "${overlay}/usr/bin/brcm_patchram_plus" "${rootfs}/usr/bin/brcm_patchram_plus"
