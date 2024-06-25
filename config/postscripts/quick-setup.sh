@@ -107,6 +107,12 @@ EOF
     echo "holomotion:holomotion" | chroot "${rootfs}" /bin/bash -c "chpasswd"
     chroot "$rootfs" usermod -aG sudo "holomotion"
 
+    if  chroot "$rootfs"  getent group "video" > /dev/null 2>&1; then
+        chroot "$rootfs"  usermod -aG video "holomotion"
+        echo "User holomotion added to group video."
+    else
+        echo "Group video does not exist."
+    fi
     # setup home dir for the new user
     mkdir -p "${rootfs}/home/holomotion"
     chroot "${rootfs}" /bin/bash -c "chown -R holomotion:holomotion /home/holomotion"
