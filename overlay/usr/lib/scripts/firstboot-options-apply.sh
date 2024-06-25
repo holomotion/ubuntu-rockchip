@@ -25,12 +25,16 @@ get_dbus_session_address() {
 }
 
 # fix mpp service error
-if id -nG $target_user | grep -qw "video"; then
-    echo "user already in video group."
-else
-    echo "add user:$target_user to video group."
-    usermod -aG video $target_user 
-fi
+user_groups="adm cdrom dip video plugdev users lpadmin"
+for ug in $user_groups;
+do
+    if id -nG $target_user | grep -qw "$ug"; then
+        echo "user:$target_user already in $ug group."
+    else
+        echo "add user:$target_user to $ug group."
+        usermod -aG "$ug" $target_user
+    fi
+done
 
 # Get the D-Bus session address for the target user
 get_dbus_session_address $target_user
