@@ -107,6 +107,21 @@ EOF
     echo "holomotion:holomotion" | chroot "${rootfs}" /bin/bash -c "chpasswd"
     chroot "$rootfs" usermod -aG sudo "holomotion"
 
+    user_groups="adm cdrom dip video plugdev users lpadmin sambashare"
+    for ug in $user_groups; 
+    do
+        if  chroot "$rootfs"  getent group "$ug "> /dev/null 2>&1; then
+            chroot "$rootfs"  usermod -aG "$ug" "holomotion"
+            if [ $? -eq 0 ]; then
+                echo "Successfully added holomotion to $ug"
+            else
+                echo "Failed to add holomotion to $ug"
+            fi
+        else
+            echo "Group $ug does not exist"
+        fi
+    done
+
     if  chroot "$rootfs"  getent group "video" > /dev/null 2>&1; then
         chroot "$rootfs"  usermod -aG video "holomotion"
         echo "User holomotion added to group video."
