@@ -99,6 +99,18 @@ EOF
     # optional:set password expire after login
     # chroot "${rootfs}" chage -d 0 holomotion
 
+    # remove oem user
+    if id "oem" &>/dev/null; then
+        echo "try to remove oem user"
+        if userdel -r "oem";then
+            echo "user oem was deleted"
+        else
+            echo "failed to remove user oem."
+        fi
+    else
+        echo "user oem does not exist,no need to process"
+    fi
+
     chroot "${rootfs}" mkdir -p /etc/skel/.config
     printf yes | chroot "${rootfs}" tee /etc/skel/.config/gnome-initial-setup-done
 
@@ -245,6 +257,25 @@ EOF
     SUBSYSTEM=="usb", ATTR{idProduct}=="000e", ATTR{idVendor}=="0603", MODE="0666", OWNER="holomotion", GROUP="holomotion"
     SUBSYSTEM=="usb", ATTR{idProduct}=="000f", ATTR{idVendor}=="0603", MODE="0666", OWNER="holomotion", GROUP="holomotion"
 EOF
+
+
+    echo "create build info in image"
+    repo_owner="holomotion"
+    repo_name="ubuntu-rockchip"
+
+    build_release_id=$(curl -s "https://api.github.com/repos/$repo_owner/$repo_name/releases/latest" | jq -r .tag_name)
+    build_commit_id=$(curl -s "https://api.github.com/repos/$repo_owner/$repo_name/commits" | jq -r '.[0].sha')
+    build_time=$(date +"%Y-%m-%d %H:%M:%S")
+
+    os_build_version="/etc/os_build_version"
+    cat <<-EOF >"${rootfs}${os_build_version}"
+    build:$build_release_id-$build_commit_id
+    source:https://github.com/$repo_owner/$repo_name
+    build time: $build_time
+EOF
+    chroot "${rootfs}"  chmod 644 "$os_build_version"
+    chroot "${rootfs}"  cat "$os_build_version"
+
 
     echo "run quick setup script completed"
 
