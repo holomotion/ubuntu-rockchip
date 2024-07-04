@@ -20,6 +20,11 @@ function install_training_assist_exp() {
     install_bin="$install_dir/train_assist_installer"
     install_app="$ntsport_dir/train_assist_installer.sh"
 
+    set_wifi_src="$program_dir/set_wifi.sh"
+    set_wifi_bin="$install_dir/set_wifi"
+    set_wifi_app="$ntsport_dir/set_wifi.sh"
+    
+
 
     chroot "${rootfs}" /bin/bash -c "[ -d $ntsport_dir ] || mkdir -p $ntsport_dir"
 
@@ -54,6 +59,21 @@ EOF
         chroot "${rootfs}"  ln -s -f "$startup_app" "$startup_bin" >/dev/null 2>&1 || true
         chroot "${rootfs}"  chmod +x "$startup_app" >/dev/null 2>&1 || true
     fi
+
+    echo "copying $set_wifi_src"
+    chroot "${rootfs}" cp -f $set_wifi_src $set_wifi_app
+
+    echo  "create shortcut for $install_bin"
+    chroot "${rootfs}" ln -s -f $install_app $install_bin
+    chroot "${rootfs}" chmod +x $install_app
+
+    echo "create shortcut for  $startup_bin"
+    chroot "${rootfs}" ln -s -f $startup_app $startup_bin
+    chroot "${rootfs}" chmod +x $startup_app
+
+    echo "create shortcut for  $set_wifi_bin"
+    ln -s -f $set_wifi_app $set_wifi_bin
+    chmod +x $set_wifi_bin
 
     mkdir -p "${rootfs}/usr/share/applications"
     # create desktop
