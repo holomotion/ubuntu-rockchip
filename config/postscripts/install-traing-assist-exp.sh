@@ -23,7 +23,6 @@ function install_training_assist_exp() {
     set_wifi_src="$program_dir/set_wifi.sh"
     set_wifi_bin="$install_dir/set_wifi"
     set_wifi_app="$ntsport_dir/set_wifi.sh"
-    
 
 
     chroot "${rootfs}" /bin/bash -c "[ -d $ntsport_dir ] || mkdir -p $ntsport_dir"
@@ -60,20 +59,14 @@ EOF
         chroot "${rootfs}"  chmod +x "$startup_app" >/dev/null 2>&1 || true
     fi
 
-    echo "copying $set_wifi_src"
-    chroot "${rootfs}" cp -f $set_wifi_src $set_wifi_app
-
-    echo  "create shortcut for $install_bin"
-    chroot "${rootfs}" ln -s -f $install_app $install_bin
-    chroot "${rootfs}" chmod +x $install_app
-
-    echo "create shortcut for  $startup_bin"
-    chroot "${rootfs}" ln -s -f $startup_app $startup_bin
-    chroot "${rootfs}" chmod +x $startup_app
-
-    echo "create shortcut for  $set_wifi_bin"
-    ln -s -f $set_wifi_app $set_wifi_bin
-    chmod +x $set_wifi_bin
+    echo "check file $set_wifi_src in $rootfs"
+    if [ -f "${rootfs}${set_wifi_src}" ];then
+        echo "copying ${set_wifi_src} to ${set_wifi_app} in ${rootfs}"
+        chroot "${rootfs}"  cp -f "${set_wifi_src}" "${set_wifi_app}" >/dev/null 2>&1 || true
+        echo "create soft link for $set_wifi_app  with target $set_wifi_bin"
+        chroot "${rootfs}"  ln -s -f "$set_wifi_app" "$set_wifi_bin" >/dev/null 2>&1 || true
+        chroot "${rootfs}"  chmod +x "$set_wifi_app" >/dev/null 2>&1 || true
+    fi
 
     mkdir -p "${rootfs}/usr/share/applications"
     # create desktop
