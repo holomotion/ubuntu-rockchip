@@ -112,9 +112,10 @@ EOF
     cat <<-EOF >"${rootfs}${custom_wifi_flag}"
     true
 EOF
-
-    echo "holomotion ALL=(ALL) NOPASSWD: /usr/bin/killall, /usr/bin/wpa_supplicant, /usr/bin/wpa_cli, /sbin/ip, /sbin/dhclient, /bin/cat, /bin/rm, /usr/bin/systemctl" | sudo tee -a "${rootfs}/etc/sudoers"
-
+    echo "add sudoer file"
+    cat <<-EOF >"${rootfs}/etc/sudoers.d/custom_wifi"
+    holomotion ALL=(ALL) NOPASSWD: /usr/bin/killall, /usr/bin/wpa_supplicant, /usr/bin/wpa_cli, /sbin/ip, /sbin/dhclient, /bin/cat, /bin/rm, /usr/bin/systemctl
+EOF
 
     return 0
 }
