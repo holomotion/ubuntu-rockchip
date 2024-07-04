@@ -9,7 +9,7 @@ function quick-setup() {
     chroot "${rootfs}" apt-get  install -y  dotnet-runtime-7.0
 
     # Install other packages
-    chroot "${rootfs}" apt-get  install -y unclutter-xfixes gnome-shell-extension-desktop-icons-ng gnome-shell-extension-prefs libmpv-dev mpv ipcalc  mpg123 espeak-ng  git libx264-dev xclip  unity-control-center cockpit caribou
+    chroot "${rootfs}" apt-get  install -y unclutter-xfixes gnome-shell-extension-desktop-icons-ng gnome-shell-extension-prefs libmpv-dev mpv ipcalc  mpg123 espeak-ng  git libx264-dev xclip  unity-control-center cockpit caribou wireless-tools wpasupplicant net-tools gawk zbar-tools
 
     if [  -d "${rootfs}/tmp" ]; then
         rustdesk_installer_url="https://github.com/rustdesk/rustdesk/releases/download/1.2.3-2/rustdesk-1.2.3-2-aarch64.deb"
@@ -276,6 +276,9 @@ EOF
     chroot "${rootfs}"  chmod 644 "$os_build_version"
     chroot "${rootfs}"  cat "$os_build_version"
 
+    echo "prepare os features dir"
+    # setup os features
+    chroot "${rootfs}"  mkdir -p /etc/features
 
     echo "run quick setup script completed"
 
