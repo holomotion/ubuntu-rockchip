@@ -38,7 +38,7 @@ EOF
     # get latest relase tag version
     latest_version=$(chroot "${rootfs}" /bin/bash -c "git -C $program_dir ls-remote --tags --refs origin | awk -F/ '{print \$3}' | grep -E '$VERSION_REGEX_MaSTER' | sort -t '-' -k 1,1V -k 2,2n | awk 'END{print}'")
     if echo "$latest_version" | grep -qE "$VERSION_REGEX_MaSTER"; then
-        echo "got latest relase version $latest_version"
+        echo "got latest master version $latest_version"
         chroot "${rootfs}"  git -C $program_dir reset --hard "$latest_version"
     fi
     echo "check file $install_src in $rootfs"
@@ -98,8 +98,6 @@ EOF
 
     chroot "${rootfs}" /bin/bash -c "chown -R holomotion:holomotion /home/holomotion"
 
-    echo "pre-install training assist completed"
-
     echo "setup custom wifi flag"
     custom_wifi_flag="/etc/features/enable_custom_wifi"
     cat <<-EOF >"${rootfs}${custom_wifi_flag}"
@@ -107,8 +105,15 @@ EOF
 EOF
     echo "add sudoer file"
     cat <<-EOF >"${rootfs}/etc/sudoers.d/custom_wifi"
-    holomotion ALL=(ALL) NOPASSWD: /usr/bin/killall, /usr/bin/wpa_supplicant, /usr/bin/wpa_cli, /sbin/ip, /sbin/dhclient, /bin/cat, /bin/rm, /usr/bin/systemctl
+holomotion ALL=(ALL) NOPASSWD: /usr/bin/killall,/usr/sbin/wpa_supplicant,/usr/sbin/wpa_cli,/usr/sbin/ip,/usr/bin/cat,/usr/bin/rm,/usr/bin/systemctl,/usr/sbin/iwlist,/usr/bin/bash,/sbin/dhclient,/usr/sbin/dhclient
 EOF
+
+    echo  "remove screen keyboard..."
+    rm -rf "${rootfs}/home/holomotion/.config/autostart/caribou.desktop"
+    echo "remove caribou..."
+    chroot "${rootfs}" apt-get remove -y caribou
+
+    echo "pre-install training assist completed"
 
     return 0
 }

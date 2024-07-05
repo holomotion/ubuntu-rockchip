@@ -174,8 +174,6 @@ sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gs
 sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.desktop.session idle-delay 0
 sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.desktop.screensaver lock-enabled false
 
-echo "enable keyboard"
-sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true
 
 echo "adjust ibus ime"
 sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.freedesktop.ibus.general engines-order "[ 'pinyin','xkb:us::eng']"
@@ -194,6 +192,10 @@ user_desktop_dir=$(sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESS
 
 holomotion_desktop_file="/home/$target_user/.config/autostart/HoloMotion.desktop"
 if [ -f $holomotion_desktop_file ]; then
+
+	echo "enable keyboard"
+	sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true
+
     echo "create Holomotion desktop file.."
     cp -f $holomotion_desktop_file "$user_desktop_dir"
     chown $target_user:$target_user "$user_desktop_dir/HoloMotion.desktop"
@@ -225,6 +227,6 @@ echo $count > "$count_file"
 
 echo "check if need to apply features"
 if [ -f $feature_custom_wifi ];then
-   echo "setup custom wifi"
-  enable_custom_wifi
+	echo "setup custom wifi"
+	enable_custom_wifi
 fi

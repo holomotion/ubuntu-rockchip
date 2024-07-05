@@ -85,6 +85,12 @@ EOF
 
     chroot "${rootfs}" /bin/bash -c "chown -R holomotion:holomotion /home/holomotion"
 
+
+    echo  "remove screen keyboard..."
+    rm -rf "${rootfs}/home/holomotion/.config/autostart/caribou.desktop"
+    echo "remove caribou..."
+    chroot "${rootfs}" apt-get remove -y caribou
+
     echo "pre-install training assist completed"
 
     return 0
