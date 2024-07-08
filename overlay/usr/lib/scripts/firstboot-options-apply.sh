@@ -5,7 +5,7 @@ exec &> /var/log/firstboot-options-apply.log
 target_user="holomotion"
 default_desktop_dir="/home/holomotion/桌面"
 
-feature_custom_wifi="etc/features/enable_custom_wifi"
+feature_custom_wifi="/etc/features/enable_custom_wifi"
 
 
 get_wireless_interfce() {
@@ -19,6 +19,9 @@ get_wireless_interfce() {
 }
 
 
+is_masked() {
+    systemctl status "$1" 2>&1 | grep -q 'masked'
+}
 
 enable_custom_wifi() {
 	# 获取无线接口名
@@ -31,7 +34,7 @@ enable_custom_wifi() {
 
 	# 配置 systemd-network 
 	echo "Configuring systemd-network for interface $interface..."
-    cat <<-EOL /etc/systemd/network/10-${interface}.network 
+    cat <<-EOL > /etc/systemd/network/10-${interface}.network 
     [Match]
     Name=${interface}
 
