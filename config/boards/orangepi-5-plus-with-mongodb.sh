@@ -2,8 +2,8 @@
 
 export BOARD_NAME="Orange Pi 5 Plus"
 export BOARD_MAKER="Xulong"
-export UBOOT_PACKAGE="u-boot-orangepi-rk3588"
-export UBOOT_RULES_TARGET="orangepi_5_plus"
+export UBOOT_PACKAGE="u-boot-radxa-rk3588"
+export UBOOT_RULES_TARGET="orangepi-5-plus-rk3588"
 
 function config_image_hook__orangepi-5-plus-with-mongodb() {
     local rootfs="$1"
