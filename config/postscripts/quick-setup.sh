@@ -281,7 +281,8 @@ EOF
     chroot "${rootfs}"  mkdir -p /etc/features
 
     echo "copying useful scripts"
-     cp "${overlay}/usr/lib/scripts/screen-portrait-patch.sh" "${rootfs}/usr/lib/scripts/screen-portrait-patch.sh"
+     cp "${overlay}/usr/lib/scripts/screen-portrait-clockwise-90-patch.sh" "${rootfs}/usr/lib/scripts/screen-portrait-clockwise-90-patch.sh"
+     cp "${overlay}/usr/lib/scripts/screen-portrait-counterclockwise-90-patch.sh" "${rootfs}/usr/lib/scripts/screen-portrait-counterclockwise-90-patch.sh"
 
     echo "run quick setup script completed"
 
