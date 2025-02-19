@@ -9,7 +9,7 @@ function quick-setup() {
     chroot "${rootfs}" apt-get  install -y  dotnet-runtime-7.0
 
     # Install other packages
-    chroot "${rootfs}" apt-get  install -y unclutter-xfixes gnome-shell-extension-desktop-icons-ng gnome-shell-extension-prefs libmpv-dev mpv ipcalc  mpg123 espeak-ng  git libx264-dev xclip  unity-control-center cockpit caribou wireless-tools wpasupplicant net-tools gawk zbar-tools isc-dhcp-client
+    chroot "${rootfs}" apt-get  install -y lrzsz unclutter-xfixes gnome-shell-extension-desktop-icons-ng gnome-shell-extension-prefs libmpv-dev mpv ipcalc  mpg123 espeak-ng  git libx264-dev xclip  unity-control-center cockpit caribou wireless-tools wpasupplicant net-tools gawk zbar-tools isc-dhcp-client
 
     if [  -d "${rootfs}/tmp" ]; then
         rustdesk_installer_url="https://github.com/rustdesk/rustdesk/releases/download/1.2.3-2/rustdesk-1.2.3-2-aarch64.deb"
@@ -166,6 +166,28 @@ EOF
     Name=ibus
     Comment=Start ibus input method framework
 EOF
+
+    # install and enable shell extensions
+    echo "copying shell extensions"
+    cp "${overlay}/usr/share/shellextensions/disable-gestures-three-fingers.shell-extension.zip" "${rootfs}/usr/share/shellextensions/disable-gestures-three-fingers.shell-extension.zip"
+
+    #pre-install NT.Tool
+
+    git clone  https://e.coding.net/g-hvab4800/holomotion_update/NT.Tool.git "${overlay}/opt/NT.Tool"
+    chown -R holomotion:holomotion "${rootfs}/opt/NT.Tool"
+
+    cat <<-EOF > "${rootfs}/usr/share/applications/NT.Tool.desktop"
+      [Desktop Entry]
+      Type=Application
+      Name=NT.Tool
+      Exec=/opt/NT.Tool/NT.Tool
+      Icon=/opt/NT.Tool/icon.png
+      Terminal=false
+      Categories=Utility;
+EOF
+
+    chmod +x "${rootfs}/usr/share/applications/NT.Tool.desktop"
+
 
     # Apply system-wide language changes
     {
