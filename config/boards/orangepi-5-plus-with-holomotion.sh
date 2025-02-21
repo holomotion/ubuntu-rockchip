@@ -2,24 +2,23 @@
 
 export BOARD_NAME="Orange Pi 5 Plus"
 export BOARD_MAKER="Xulong"
-export BOARD_SOC="Rockchip RK3588"
-export BOARD_CPU="ARM Cortex A76 / A55"
 export UBOOT_PACKAGE="u-boot-radxa-rk3588"
 export UBOOT_RULES_TARGET="orangepi-5-plus-rk3588"
-export COMPATIBLE_SUITES=("jammy" "noble" "oracular" "plucky")
-export COMPATIBLE_FLAVORS=("server" "desktop")
 
-function config_image_hook__orangepi-5-plus() {
+function config_image_hook__orangepi-5-plus-with-holomotion() {
+    local rootfs="$1"
+    local overlay="$2"
+
+
     local rootfs="$1"
     local overlay="$2"
     local suite="$3"
 
-
     # run user scripts
     # shellcheck source=/dev/null
     quick-setup "$rootfs" "$overlay"
-    # pre-install mongodb
-    install-mongodb "$rootfs" "$overlay"
+    # install holomotion
+    install_holomotion "$rootfs" "$overlay"
 
     if [ "${suite}" == "jammy" ] || [ "${suite}" == "noble" ]; then
         # Install panfork

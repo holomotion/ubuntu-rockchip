@@ -16,6 +16,18 @@ if [[ -z ${BOARD} ]]; then
     exit 1
 fi
 
+# load post scripts
+for opt in ../config/postscripts/*.sh; do
+    # Check if the file exists and is readable
+    if [ -r "${opt}" ]; then
+        # Load the script
+        # shellcheck source=/dev/null
+        source "${opt}"
+    else
+        echo "Cannot read file ${opt}"
+    fi
+done
+
 # shellcheck source=/dev/null
 source "../config/boards/${BOARD}.sh"
 
