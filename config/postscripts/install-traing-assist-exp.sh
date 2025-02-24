@@ -108,10 +108,10 @@ EOF
 holomotion ALL=(ALL) NOPASSWD: /usr/bin/killall,/usr/sbin/wpa_supplicant,/usr/sbin/wpa_cli,/usr/sbin/ip,/usr/bin/cat,/usr/bin/rm,/usr/bin/systemctl,/usr/sbin/iwlist,/usr/bin/bash,/sbin/dhclient,/usr/sbin/dhclient
 EOF
 
-    echo  "remove screen keyboard..."
-    rm -rf "${rootfs}/home/holomotion/.config/autostart/caribou.desktop"
-    echo "remove caribou..."
-    chroot "${rootfs}" apt-get remove -y caribou
+    # echo  "remove screen keyboard..."
+    # rm -rf "${rootfs}/home/holomotion/.config/autostart/caribou.desktop"
+    # echo "remove caribou..."
+    # chroot "${rootfs}" apt-get remove -y caribou
 
     echo "pre-install training assist completed"
 

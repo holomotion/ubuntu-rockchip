@@ -9,7 +9,7 @@ function quick-setup() {
     chroot "${rootfs}" apt-get  install -y  dotnet-runtime-7.0
 
     # Install other packages
-    chroot "${rootfs}" apt-get  install -y lrzsz unclutter-xfixes gnome-shell-extension-desktop-icons-ng gnome-shell-extension-prefs libmpv-dev mpv ipcalc  mpg123 espeak-ng  git libx264-dev xclip  unity-control-center cockpit caribou wireless-tools wpasupplicant net-tools gawk zbar-tools isc-dhcp-client
+    chroot "${rootfs}" apt-get  install -y lrzsz unclutter-xfixes gnome-shell-extension-desktop-icons-ng gnome-shell-extension-prefs libmpv-dev mpv ipcalc  mpg123 espeak-ng  git libx264-dev xclip  unity-control-center cockpit wireless-tools wpasupplicant net-tools gawk zbar-tools isc-dhcp-client
 
     if [  -d "${rootfs}/tmp" ]; then
         rustdesk_installer_url="https://github.com/rustdesk/rustdesk/releases/download/1.2.3-2/rustdesk-1.2.3-2-aarch64.deb"
@@ -177,7 +177,6 @@ EOF
     nt_tool_save_path="${rootfs}/tmp/nt.tool.zip"
     if wget  "${nt_tool_download_url}" -O "${nt_tool_save_path}"; then
         mkdir "${rootfs}/opt/NT.Tool"
-        chown -R holomotion:holomotion "${rootfs}/opt/NT.Tool"
         unzip "${nt_tool_save_path}" -d "${rootfs}/opt/NT.Tool/"
         rm "${nt_tool_save_path}"
     fi
@@ -203,16 +202,16 @@ EOF
     } >> "${rootfs}/etc/profile"
 
     # create caribou screen keyboard startup
-    cat <<-EOF >"${rootfs}/home/holomotion/.config/autostart/caribou.desktop"
-    [Desktop Entry]
-    Type=Application
-    Exec=caribou
-    Hidden=false
-    NoDisplay=false
-    X-GNOME-Autostart-enabled=true
-    Name=Caribou
-    Comment=On-screen keyboard
-EOF
+#     cat <<-EOF >"${rootfs}/home/holomotion/.config/autostart/caribou.desktop"
+#     [Desktop Entry]
+#     Type=Application
+#     Exec=caribou
+#     Hidden=false
+#     NoDisplay=false
+#     X-GNOME-Autostart-enabled=true
+#     Name=Caribou
+#     Comment=On-screen keyboard
+# EOF
 
     # uncomment logind.conf to set power options
     LOGIND_CONF="${rootfs}/etc/systemd/logind.conf"
@@ -307,10 +306,6 @@ EOF
     echo "prepare os features dir"
     # setup os features
     chroot "${rootfs}"  mkdir -p /etc/features
-
-    echo "copying useful scripts"
-     cp "${overlay}/usr/lib/scripts/screen-portrait-clockwise-90-patch.sh" "${rootfs}/usr/lib/scripts/screen-portrait-clockwise-90-patch.sh"
-     cp "${overlay}/usr/lib/scripts/screen-portrait-counterclockwise-90-patch.sh" "${rootfs}/usr/lib/scripts/screen-portrait-counterclockwise-90-patch.sh"
 
     echo "run quick setup script completed"
 
