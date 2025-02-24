@@ -169,6 +169,7 @@ EOF
 
     # install and enable shell extensions
     echo "copying shell extensions"
+    mkdir -p "${rootfs}/usr/share/shellextensions"
     cp "${overlay}/usr/share/shellextensions/disable-gestures-three-fingers.shell-extension.zip" "${rootfs}/usr/share/shellextensions/disable-gestures-three-fingers.shell-extension.zip"
 
     #pre-install NT.Tool
