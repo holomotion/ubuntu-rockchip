@@ -173,9 +173,14 @@ EOF
     cp "${overlay}/usr/share/shellextensions/disable-gestures-three-fingers.shell-extension.zip" "${rootfs}/usr/share/shellextensions/disable-gestures-three-fingers.shell-extension.zip"
 
     #pre-install NT.Tool
-
-    git clone  https://e.coding.net/g-hvab4800/holomotion_update/NT.Tool.git "${overlay}/opt/NT.Tool"
-    chown -R holomotion:holomotion "${rootfs}/opt/NT.Tool"
+    nt_tool_download_url="https://github.com/holomotion/NT.Tool/releases/download/v1.0.0/NT.Tool.zip"
+    nt_tool_save_path="${rootfs}/tmp/nt.tool.zip"
+    if wget  "${nt_tool_download_url}" -O "${nt_tool_save_path}"; then
+        mkdir "${rootfs}/opt/NT.Tool"
+        chown -R holomotion:holomotion "${rootfs}/opt/NT.Tool"
+        unzip "${nt_tool_save_path}" -d "${rootfs}/opt/NT.Tool/"
+        rm "${nt_tool_save_path}"
+    fi
 
     cat <<-EOF > "${rootfs}/usr/share/applications/NT.Tool.desktop"
       [Desktop Entry]
