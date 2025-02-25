@@ -76,7 +76,7 @@ function quick-setup() {
 
     # copy wallpapers
     mkdir -p "${rootfs}/usr/share/backgrounds"
-    cp "${overlay}/usr/share/backgrounds/holomotion01.jpeg" "${rootfs}/usr/share/backgrounds/holomotion01.jpeg"
+    cp -r "${overlay}/usr/share/backgrounds/*" "${rootfs}/usr/share/backgrounds/"
     chroot "${rootfs}" chmod -R 755 /usr/share/backgrounds/
     # setup cockpit info
     cat <<-EOF >"${rootfs}/etc/issue.cockpit"
@@ -197,6 +197,20 @@ EOF
         mkdir "${rootfs}/opt/NT.Tool"
         unzip "${nt_tool_save_path}" -d "${rootfs}/opt/NT.Tool/"
         rm "${nt_tool_save_path}"
+        chroot "${rootfs}" /bin/bash -c "chown -R holomotion:holomotion /opt/NT.Tool/"
+        chroot "${rootfs}" /bin/bash -c "chmod +x /opt/NT.Tool/NT.Tool"
+        chroot "${rootfs}" /bin/bash -c "chmod +x /opt/NT.Tool/NT.Tool.sh"
+        cat <<-EOF > "${rootfs}/usr/share/applications/NT.Tool.desktop"
+      [Desktop Entry]
+      Type=Application
+      Name=NT.Tool
+      Exec=/opt/NT.Tool/NT.Tool
+      Icon=/opt/NT.Tool/icon.png
+      Terminal=false
+      Categories=Utility;
+EOF
+        chmod +x "${rootfs}/usr/share/applications/NT.Tool.desktop"
+
     fi
 
     cat <<-EOF > "${rootfs}/usr/share/applications/NT.Tool.desktop"

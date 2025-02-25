@@ -196,10 +196,12 @@ if [ -f "/usr/share/shellextensions/disable-gestures-three-fingers.shell-extensi
     fi
 fi
 
-if [ -f "/usr/share/backgrounds/holomotion01.jpeg" ];then
+if [ -f "/usr/share/backgrounds/holomotion_h.png" ];then
     echo "set wallpaper"
-    sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/holomotion01.jpeg'
+    sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/holomotion_h.png'
 fi
+
+echo "fix desktop files"
 
 user_desktop_dir=$(sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" xdg-user-dir DESKTOP || echo "$default_desktop_dir")
 
