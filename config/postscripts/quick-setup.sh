@@ -76,7 +76,8 @@ function quick-setup() {
 
     # copy wallpapers
     mkdir -p "${rootfs}/usr/share/backgrounds"
-    cp -r "${overlay}/usr/share/backgrounds/*" "${rootfs}/usr/share/backgrounds/"
+    cp  "${overlay}/usr/share/backgrounds/holomotion_h.png" "${rootfs}/usr/share/backgrounds/holomotion_h.png"
+    cp  "${overlay}/usr/share/backgrounds/holomotion_v.jpg" "${rootfs}/usr/share/backgrounds/holomotion_v.jpg"
     chroot "${rootfs}" chmod -R 755 /usr/share/backgrounds/
     # setup cockpit info
     cat <<-EOF >"${rootfs}/etc/issue.cockpit"
