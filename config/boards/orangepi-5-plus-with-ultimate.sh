@@ -5,15 +5,17 @@ export BOARD_MAKER="Xulong"
 export UBOOT_PACKAGE="u-boot-radxa-rk3588"
 export UBOOT_RULES_TARGET="orangepi-5-plus-rk3588"
 
-function config_image_hook__orangepi-5-plus-with-training-assist-exp() {
+function config_image_hook__orangepi-5-plus-with-ultimate() {
     local rootfs="$1"
     local overlay="$2"
 
     # run user scripts
     # shellcheck source=/dev/null
     quick-setup "$rootfs" "$overlay"
+    # install holomotion
+    install_holomotion "$rootfs" "$overlay"
     # install training assist
-    install_training_assist_exp "$rootfs" "$overlay"
+    install_training_assist "$rootfs" "$overlay"
     # Install panfork
     chroot "${rootfs}" add-apt-repository -y ppa:jjriek/panfork-mesa
     chroot "${rootfs}" apt-get update

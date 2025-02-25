@@ -205,12 +205,12 @@ echo "fix desktop files"
 
 user_desktop_dir=$(sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" xdg-user-dir DESKTOP || echo "$default_desktop_dir")
 
+
+echo "enable keyboard"
+sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true
+
 holomotion_desktop_file="/home/$target_user/.config/autostart/HoloMotion.desktop"
 if [ -f $holomotion_desktop_file ]; then
-
-	echo "enable keyboard"
-	sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true
-
     echo "create Holomotion desktop file.."
     cp -f $holomotion_desktop_file "$user_desktop_dir"
     chown $target_user:$target_user "$user_desktop_dir/HoloMotion.desktop"
@@ -226,6 +226,14 @@ if [ -f $training_assist_desktop_file ]; then
     chmod a+x "$user_desktop_dir/train_assist_client.desktop"
     sudo -u holomotion env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gio set "$user_desktop_dir/train_assist_client.desktop" "metadata::trusted" true
 fi
+
+echo "check auto start file both exist.."
+if [ -f $holomotion_desktop_file ] && [ -f $training_assist_desktop_file ];then
+	echo "disable autostart when holomotion and  training assist installed both"
+	rm -rf $holomotion_desktop_file
+	rm -rf $training_assist_desktop_file
+fi
+
 
 
 count_file="/home/$target_user/.config/firstboot-run-counter"
