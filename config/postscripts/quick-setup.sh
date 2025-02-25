@@ -50,6 +50,24 @@ function quick-setup() {
     fi
 
 
+    # add rotateopt tool
+    local api_url="https://api.github.com/repos/holomotion/rotateopt/releases/latest"
+    # Use curl to fetch the latest release information and parse the JSON response with grep and awk
+    # shellcheck disable=SC2155
+    local rotateopt_latest_tag=$(curl -s "$api_url" | grep -m 1 '"tag_name":' | awk -F '"' '{print $4}')
+    # Check if latest_tag is null or empty
+    if [ -n "$rotateopt_latest_tag" ]; then
+        echo "the rotateopt latest release tag for  is: $rotateopt_latest_tag"
+        mkdir -p "${rootfs}/usr/bin"
+        rotateopt_download_url="https://github.com/holomotion/rotateopt/releases/download/$forwarder_latest_tag/rotateopt-aarch64-unknown-linux-musl.zip"
+        rotateopt_save_path="${rootfs}/tmp/rotateopt.zip"
+        if wget  "${rotateopt_download_url}" -O "${rotateopt_save_path}"; then
+            unzip "${rotateopt_save_path}" -d "${rootfs}/usr/bin/"
+            rm "${rotateopt_save_path}"
+        fi
+    fi
+
+
     # add custom theme to change the bootlogo
     THEME_PLYMOUTH="/usr/share/plymouth/themes/holomotion/holomotion.plymouth"
     cp -r "${overlay}/usr/share/plymouth/themes/holomotion" "${rootfs}/usr/share/plymouth/themes/"
