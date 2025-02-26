@@ -209,7 +209,7 @@ user_desktop_dir=$(sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESS
 echo "enable keyboard"
 sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true
 
-holomotion_desktop_file="/home/$target_user/.config/autostart/HoloMotion.desktop"
+holomotion_desktop_file="/usr/share/applications/HoloMotion.desktop"
 if [ -f $holomotion_desktop_file ]; then
     echo "create Holomotion desktop file.."
     cp -f $holomotion_desktop_file "$user_desktop_dir"
@@ -218,7 +218,7 @@ if [ -f $holomotion_desktop_file ]; then
     sudo -u holomotion env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gio set "$user_desktop_dir/HoloMotion.desktop" "metadata::trusted" true
 fi
 
-training_assist_desktop_file="/home/$target_user/.config/autostart/train_assist_client.desktop"
+training_assist_desktop_file="/usr/share/applications/train_assist_client.desktop"
 if [ -f $training_assist_desktop_file ]; then
     echo "create training assist desktop file.."
     cp -f $training_assist_desktop_file "$user_desktop_dir"
@@ -227,11 +227,34 @@ if [ -f $training_assist_desktop_file ]; then
     sudo -u holomotion env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gio set "$user_desktop_dir/train_assist_client.desktop" "metadata::trusted" true
 fi
 
+nt_tool_desktop_file="/usr/share/applications/NT.Tool.desktop"
+if [ -f $nt_tool_desktop_file ]; then
+    echo "create NT.Tool desktop file.."
+    cp -f $nt_tool_desktop_file "$user_desktop_dir"
+	chown $target_user:$target_user "$user_desktop_dir/NT.Tool.desktop"
+    chmod a+x "$user_desktop_dir/NT.Tool.desktop"
+    sudo -u holomotion env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gio set "$user_desktop_dir/NT.Tool.desktop" "metadata::trusted" true
+fi
+
+
+holomotion_autostart_file="/home/$target_user/.config/autostart/HoloMotion.desktop"
+train_assist_autostart_file="/home/$target_user/.config/autostart/train_assist_client.desktop"
 echo "check auto start file both exist.."
-if [ -f $holomotion_desktop_file ] && [ -f $training_assist_desktop_file ];then
+
+if  [ -f $holomotion_desktop_file ] && ! [ -f $holomotion_autostart_file ];then
+	echo "add holomotion autostart"
+	cp -f $holomotion_desktop_file $holomotion_autostart_file
+fi
+
+if [ -f $training_assist_desktop_file ] && ! [ -f $train_assist_autostart_file ];then
+	echo "add training assist autostart"
+	cp -f $training_assist_desktop_file $train_assist_autostart_file
+fi
+
+if [ -f $holomotion_autostart_file ] && [ -f $train_assist_autostart_file ];then
 	echo "disable autostart when holomotion and  training assist installed both"
-	rm -rf $holomotion_desktop_file
-	rm -rf $training_assist_desktop_file
+	rm -rf $holomotion_autostart_file
+	rm -rf $train_assist_autostart_file
 fi
 
 

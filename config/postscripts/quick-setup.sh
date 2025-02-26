@@ -205,7 +205,7 @@ EOF
       [Desktop Entry]
       Type=Application
       Name=NT.Tool
-      Exec=/opt/NT.Tool/NT.Tool
+      Exec=/opt/NT.Tool/NT.Tool.sh
       Icon=/opt/NT.Tool/icon.png
       Terminal=false
       Categories=Utility;

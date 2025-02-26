@@ -11,7 +11,7 @@ function install_training_assist() {
     program_dir="$ntsport_dir/client_versions"
 
     startup_bin="$install_dir/train_assist_client"
-    startup_icon="$ntsport_dir/train_assist_client.png"
+    startup_icon="$program_dir/train_assist_client.png"
 
     startup_src="$program_dir/train_assist_for_linux.sh"
     startup_app="$ntsport_dir/train_assist_for_linux.sh"
