@@ -233,30 +233,5 @@ jobs:
           draft: false
           overwrite: true
 
-      - name: upload to qiniu
-        if: needs.prepare_release.outputs.release_id != ''
-        uses: qiniu/upload-action@main
-        with:
-          # Your qiniu access key, required.
-          access_key: ${{ secrets.QINIU_ACCESS_KEY }}
-          # Your qiniu secret key, required.
-          secret_key: ${{ secrets.QINIU_SECRET_KEY }}
-          # Bucket name, required.
-          bucket: ${{ secrets.QINIU_BUCKET }}
-          # The local directory (or file) you want to upload to bucket.
-          # Default: './'
-          artifacts: images/ubuntu-*-preinstalled-*-arm64-${{ matrix.board }}.*
-          # The directory inside of the bucket you want to upload to, namely key prefix prepended to dest file key.Remote path prefix
-          # Default: '/'
-          prefix: "${{ secrets.QINIU_BUCKET_PREFIX }}/${{ github.ref_name }}/"
-          # set the Size of each part of a multipart upload to 16MB,default is 4mb.16MB = 16 * 1024 * 1024 = 16777216  byte
-          multipart_upload_part_size: 16777216
-          # set the Minimum size of a file before it is uploaded via multipart upload to 32mb,default is 4mb.32MB = 32 * 1024 * 1024 = 33554432 byte
-          multipart_upload_threshold: 33554432
-          overwrite: true
-          concurrency: 10
-        # ignore error for network error
-        continue-on-error: true
-
       - name: Clean cache
         run: sync && sudo rm -rf ./images/ubuntu-*-preinstalled-*-arm64-${{ matrix.board }}.* ./images_parts/ubuntu-*-preinstalled-*-arm64-${{ matrix.board }}.*  && sync
