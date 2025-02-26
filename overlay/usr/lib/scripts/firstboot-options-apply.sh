@@ -257,7 +257,9 @@ if [ -f $holomotion_autostart_file ] && [ -f $train_assist_autostart_file ];then
 	rm -rf $train_assist_autostart_file
 fi
 
-
+echo "disable keyring service"
+echo ""|gnome-keyring-daemon --replace --unlock
+systemctl --user disable gnome-keyring-daemon.service
 
 count_file="/home/$target_user/.config/firstboot-run-counter"
 if [ ! -f "$count_file" ]; then
