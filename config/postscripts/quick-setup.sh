@@ -214,17 +214,6 @@ EOF
 
     fi
 
-    cat <<-EOF > "${rootfs}/usr/share/applications/NT.Tool.desktop"
-      [Desktop Entry]
-      Type=Application
-      Name=NT.Tool
-      Exec=/opt/NT.Tool/NT.Tool
-      Icon=/opt/NT.Tool/icon.png
-      Terminal=false
-      Categories=Utility;
-EOF
-
-    chmod +x "${rootfs}/usr/share/applications/NT.Tool.desktop"
 
 
     # Apply system-wide language changes
