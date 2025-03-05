@@ -186,6 +186,13 @@ EOF
     Comment=Start ibus input method framework
 EOF
 
+    # copy cockpit files plugin
+    echo "install cockpit files extensions"
+    echo "creating dir..."
+    mkdir -p "${rootfs}/usr/local/share/cockpit/files"
+    echo "extract cockpit files to dir"
+    unzip "${overlay}/usr/share/cockpit/cockpit-files-17.zip" -d "${rootfs}/usr/local/share/cockpit/files"
+
     # install and enable shell extensions
     echo "copying shell extensions"
     mkdir -p "${rootfs}/usr/share/shellextensions"
