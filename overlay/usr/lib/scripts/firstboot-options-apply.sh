@@ -241,6 +241,11 @@ holomotion_autostart_file="/home/$target_user/.config/autostart/HoloMotion.deskt
 train_assist_autostart_file="/home/$target_user/.config/autostart/train_assist_client.desktop"
 echo "check auto start file both exist.."
 
+if [ -f  $holomotion_desktop_file ];then
+    echo "adjust dock positions to better experience..."
+	sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM
+fi
+
 if  [ -f $holomotion_desktop_file ] && ! [ -f $holomotion_autostart_file ];then
 	echo "add holomotion autostart"
 	cp -f $holomotion_desktop_file $holomotion_autostart_file
