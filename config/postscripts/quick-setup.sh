@@ -59,7 +59,7 @@ function quick-setup() {
     if [ -n "$rotateopt_latest_tag" ]; then
         echo "the rotateopt latest release tag for  is: $rotateopt_latest_tag"
         mkdir -p "${rootfs}/usr/bin"
-        rotateopt_download_url="https://github.com/holomotion/rotateopt/releases/download/$forwarder_latest_tag/rotateopt-aarch64-unknown-linux-musl.zip"
+        rotateopt_download_url="https://github.com/holomotion/rotateopt/releases/download/$rotateopt_latest_tag/rotateopt-aarch64-unknown-linux-musl.zip"
         rotateopt_save_path="${rootfs}/tmp/rotateopt.zip"
         if wget  "${rotateopt_download_url}" -O "${rotateopt_save_path}"; then
             unzip "${rotateopt_save_path}" -d "${rootfs}/usr/bin/"
