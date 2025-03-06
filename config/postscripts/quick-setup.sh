@@ -131,16 +131,19 @@ EOF
     fi
 
     chroot "${rootfs}" mkdir -p /etc/skel/.config
+    chroot "${rootfs}" mkdir -p /etc/skel/{Desktop,Documents,Downloads,Music,Pictures,Videos}
     printf yes | chroot "${rootfs}" tee /etc/skel/.config/gnome-initial-setup-done
+    echo "en_US" | chroot "${rootfs}" tee /etc/skel/.config/user-dirs.locale
     echo "set user to use english dir name"
-cat <<-EOF >>"${rootfs}/etc/skel/.config/user-dirs.dirs"
-    XDG_DESKTOP_DIR="$HOME/Desktop"
-    XDG_DOCUMENTS_DIR="$HOME/Documents"
-    XDG_DOWNLOAD_DIR="$HOME/Downloads"
-    XDG_MUSIC_DIR="$HOME/Music"
-    XDG_PICTURES_DIR="$HOME/Pictures"
-    XDG_VIDEOS_DIR="$HOME/Videos"
+    chroot "${rootfs}" cat <<-EOF >>"/etc/skel/.config/user-dirs.dirs"
+XDG_DESKTOP_DIR="$HOME/Desktop"
+XDG_DOCUMENTS_DIR="$HOME/Documents"
+XDG_DOWNLOAD_DIR="$HOME/Downloads"
+XDG_MUSIC_DIR="$HOME/Music"
+XDG_PICTURES_DIR="$HOME/Pictures"
+XDG_VIDEOS_DIR="$HOME/Videos"
 EOF
+
 
     # pre create user and set autologin
     chroot "${rootfs}" useradd -m -s "/bin/bash" "holomotion"
@@ -159,7 +162,9 @@ EOF
     done
 
     # setup home dir for the new user
-    mkdir -p "${rootfs}/home/holomotion"
+    chroot "$rootfs" mkdir -p "/home/holomotion"
+    echo "pre-create dirs in user-home"
+    chroot "$rootfs" mkdir  /home/holomotion/{Desktop,Documents,Downloads,Music,Pictures,Videos}
     chroot "${rootfs}" /bin/bash -c "chown -R holomotion:holomotion /home/holomotion"
 
     # chinese config
