@@ -162,9 +162,16 @@ EOF
     done
 
     # setup home dir for the new user
-    chroot "$rootfs" mkdir -p "/home/holomotion"
-    echo "pre-create dirs in user-home"
-    chroot "$rootfs" mkdir  /home/holomotion/{Desktop,Documents,Downloads,Music,Pictures,Videos}
+    if ! chroot "${rootfs}" test -d /home/holomotion; then
+        chroot "$rootfs" mkdir -p "/home/holomotion"
+        echo "pre-create dirs in user-home"
+        chroot "$rootfs" mkdir  /home/holomotion/{Desktop,Documents,Downloads,Music,Pictures,Videos}
+        chroot "${rootfs}" /bin/bash -c "chown -R holomotion:holomotion /home/holomotion"
+    else
+        echo "/home/holomotion already exists, skipping directory creation"
+    fi
+
+    echo "fix chown for holomotion user"
     chroot "${rootfs}" /bin/bash -c "chown -R holomotion:holomotion /home/holomotion"
 
     # chinese config
