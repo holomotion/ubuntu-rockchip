@@ -132,6 +132,15 @@ EOF
 
     chroot "${rootfs}" mkdir -p /etc/skel/.config
     printf yes | chroot "${rootfs}" tee /etc/skel/.config/gnome-initial-setup-done
+    echo "set user to use english dir name"
+cat <<-EOF >>"${rootfs}/etc/skel/.config/user-dirs.dirs"
+    XDG_DESKTOP_DIR="$HOME/Desktop"
+    XDG_DOCUMENTS_DIR="$HOME/Documents"
+    XDG_DOWNLOAD_DIR="$HOME/Downloads"
+    XDG_MUSIC_DIR="$HOME/Music"
+    XDG_PICTURES_DIR="$HOME/Pictures"
+    XDG_VIDEOS_DIR="$HOME/Videos"
+EOF
 
     # pre create user and set autologin
     chroot "${rootfs}" useradd -m -s "/bin/bash" "holomotion"
