@@ -143,13 +143,25 @@ XDG_MUSIC_DIR="$HOME/Music"
 XDG_PICTURES_DIR="$HOME/Pictures"
 XDG_VIDEOS_DIR="$HOME/Videos"
 EOF
+    chroot "${rootfs}" mkdir /etc/xdg/
+    chroot "${rootfs}" cat <<-EOF >"/etc/xdg/user-dirs.defaults"
+DESKTOP=Desktop
+DOCUMENTS=Documents
+DOWNLOAD=Downloads
+MUSIC=Music
+PICTURES=Pictures
+PUBLICSHARE=Public
+TEMPLATES=Templates
+VIDEOS=Videos
+EOF
 
 
     # pre create user and set autologin
     chroot "${rootfs}" useradd -m -s "/bin/bash" "holomotion"
     echo "holomotion:holomotion" | chroot "${rootfs}" /bin/bash -c "chpasswd"
     chroot "$rootfs" usermod -aG sudo "holomotion"
-
+    echo "update use dirs settings"
+    chroot "$rootfs" sudo -u holomotion LANG=en_US.UTF-8 xdg-user-dirs-update --force
     user_groups="adm cdrom dip video plugdev users lpadmin"
     for ug in $user_groups;
     do
