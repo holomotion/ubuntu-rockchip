@@ -189,10 +189,11 @@ gnome-extensions disable tiling-assistant@ubuntu.com
 sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gsettings set org.gnome.mutter edge-tiling false
 
 if [ -f "/usr/share/shellextensions/disable-gestures-three-fingers.shell-extension.zip" ];then
-   sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS"  gnome-extensions install "/usr/share/shellextensions/disable-gestures-three-fingers.shell-extension.zip"
-    if sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gnome-extensions list | grep -q disable-gestures-three-fingers; then
-    echo "pre-enable shell extension:disable-gestures-three-fingers"
-    sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS"   gnome-extensions enable disable-gestures-three-fingers
+	sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS"  gnome-extensions install "/usr/share/shellextensions/disable-gestures-three-fingers.shell-extension.zip"
+    shell_extension_name="disable-gestures-three-above@holomotion.tech"
+    if sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" gnome-extensions list | grep -q $shell_extension_name; then
+		echo "pre-enable shell extension:disable-gestures-three-fingers"
+		sudo -u $target_user env DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS"   gnome-extensions enable $shell_extension_name
     fi
 fi
 
