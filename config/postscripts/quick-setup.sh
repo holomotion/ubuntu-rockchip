@@ -135,7 +135,7 @@ EOF
     printf yes | chroot "${rootfs}" tee /etc/skel/.config/gnome-initial-setup-done
     echo "en_US" | chroot "${rootfs}" tee /etc/skel/.config/user-dirs.locale
     echo "set user to use english dir name"
-    chroot "${rootfs}" cat <<-EOF >>"/etc/skel/.config/user-dirs.dirs"
+    chroot "${rootfs}" cat <<-EOF >"/etc/skel/.config/user-dirs.dirs"
 XDG_DESKTOP_DIR="$HOME/Desktop"
 XDG_DOCUMENTS_DIR="$HOME/Documents"
 XDG_DOWNLOAD_DIR="$HOME/Downloads"
@@ -143,7 +143,6 @@ XDG_MUSIC_DIR="$HOME/Music"
 XDG_PICTURES_DIR="$HOME/Pictures"
 XDG_VIDEOS_DIR="$HOME/Videos"
 EOF
-    chroot "${rootfs}" mkdir /etc/xdg/
     chroot "${rootfs}" cat <<-EOF >"/etc/xdg/user-dirs.defaults"
 DESKTOP=Desktop
 DOCUMENTS=Documents
