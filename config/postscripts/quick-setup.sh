@@ -256,11 +256,11 @@ EOF
 
 
     # Apply system-wide language changes
-    {
-        echo "export LC_ALL=zh_CN.UTF-8"
-        echo "export LANG=zh_CN.UTF-8"
-        echo "export LANGUAGE=zh_CN:zh"
-    } >> "${rootfs}/etc/profile"
+   # {
+   #     echo "export LC_ALL=zh_CN.UTF-8"
+   #     echo "export LANG=zh_CN.UTF-8"
+   #        echo "export LANGUAGE=zh_CN:zh"
+   #} >> "${rootfs}/etc/profile"
 
     # create caribou screen keyboard startup
 #     cat <<-EOF >"${rootfs}/home/holomotion/.config/autostart/caribou.desktop"
